@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 const mongoose = require('mongoose');
-const MongoStore = require('connect-mongo')
+
 // Initialize Express app
 const app = express();
 
@@ -23,12 +23,7 @@ app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: {
-        maxAge: 60 * 60000,
-    },
-    store: MongoStore.create({
-        client: mongoose.connection.getClient(),
-    })
+  
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -48,29 +43,29 @@ const User = mongoose.model('User', userSchema);
 
 // Routes
 app.get('/', (req, res) => {
-    res.render('index');
+    
+    res.render('index',{isLogin:req.session.loggedIn});
 });
 
 app.get('/about', (req, res) => {
-    res.render('about');
+    res.render('about',{isLogin:req.session.loggedIn});
 });
 
 app.get('/services', (req, res) => {
-    res.render('services');
+    res.render('services',{isLogin:req.session.loggedIn});
 });
 
 app.get('/login', (req, res) => {
-    res.render('login', { error: null });
+    res.render('login', { error: null,isLogin:req.session.loggedIn });
 });
 
 app.get('/signup', (req, res) => {
-    res.render('signup');
+    res.render('signup',{isLogin:req.session.loggedIn});
 });
 
 app.get('/dashboard', (req, res) => {
-    console.log(req.isAuthenticated())
     if (req.session.loggedIn) {
-        res.render('dashboard');
+        res.render('dashboard',{isLogin:req.session.loggedIn});
     } else {
         res.redirect('/login');
     }
@@ -79,7 +74,7 @@ app.get('/dashboard', (req, res) => {
 app.post('/signup', async (req, res) => {
     const { name, username, email, password } = req.body;
     try {
-        const newUser = new User({ name, username, email, password });
+        const newUser = new User({     name, username, email, password });
         await newUser.save();
         res.redirect('/login');
     } catch (error) {
@@ -96,11 +91,11 @@ app.post('/login', async (req, res) => {
             req.session.loggedIn = true;
             res.redirect('/dashboard');
         } else {
-            res.render('login', { error: 'Incorrect username or password' });
+            res.render('login', { error: 'Incorrect username or password',isLogin:req.session.loggedIn });
         }
     } catch (error) {
         console.error(error);
-        res.render('login', { error: 'An error occurred. Please try again.' });
+        res.render('login', { error: 'An error occurred. Please try again.',isLogin:req.session.loggedIn });
     }
 });
 
