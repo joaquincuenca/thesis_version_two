@@ -8,14 +8,13 @@ const mongoose = require('mongoose');
 const app = express();
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/database', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('Connected to MongoDB');
-}).catch(err => {
-    console.error('Failed to connect to MongoDB', err);
-});
+mongoose.connect('mongodb+srv://joaquin:Q6FIRHk3mR75VbsY@cluster0.dxizzqg.mongodb.net/database?retryWrites=true&w=majority&appName=Cluster0')
+.then(() =>{
+    console.log("database connected");
+})
+.catch(() =>{
+    console.log("database failed");
+})
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
