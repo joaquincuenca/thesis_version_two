@@ -3,6 +3,9 @@
 <div class="container mt-5 mx-auto black">
     <div class="signup-box login-box"> <!-- Added div for the floating box -->
         <h1 class="black">Sign Up</h1>
+        <% if (locals.taken) { %>
+            <p class="text-danger"><%= taken %></p>
+        <% } %>
         <form action="/signup" method="POST">
             <div class="form-group">
                 <label for="name">Name</label>
@@ -10,7 +13,7 @@
             </div>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="username" class="form-control" id="username" name="username" required>
+                <input type="text" class="form-control" id="username" name="username" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
@@ -27,4 +30,5 @@
         </div>
     </div>
 </div>
+
 <%- include('partials/footer') %>

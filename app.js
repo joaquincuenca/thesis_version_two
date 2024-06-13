@@ -33,10 +33,10 @@ app.set('view engine', 'ejs');
 
 // User Schema and Model
 const userSchema = new mongoose.Schema({
-    name: String,
-    username: { type: String, unique: true },
-    email: { type: String, unique: true },
-    password: String
+    name: { type: String, required: true },
+    username: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
 });
 const User = mongoose.model('User', userSchema);
 
@@ -71,14 +71,21 @@ app.get('/dashboard', (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-    const { name, username, email, password } = req.body;
+      const { name, username, email, password } = req.body;
     try {
-        const newUser = new User({     name, username, email, password });
+        // Check if email already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.render('signup.ejs', { taken: "Email is already taken." });
+        }
+
+        // If email does not exist, create a new user
+        const newUser = new User({ name, username, email, password });
         await newUser.save();
-        res.redirect('/login');
+        res.render('login.ejs');
     } catch (error) {
         console.error(error);
-        res.redirect('/signup');
+        res.render('signup.ejs', { taken: "An error occurred. Please try again." });
     }
 });
 
@@ -93,7 +100,6 @@ app.post('/login', async (req, res) => {
             res.render('login', { error: 'Incorrect username or password',isLogin:req.session.loggedIn });
         }
     } catch (error) {
-        console.error(error);
         res.render('login', { error: 'An error occurred. Please try again.',isLogin:req.session.loggedIn });
     }
 });

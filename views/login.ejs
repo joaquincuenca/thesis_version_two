@@ -1,8 +1,9 @@
-<%- include('partials/header') %>
+<%- include('partials/header') %>\
+
 <div class="container mt-5 mx-auto black">
     <div class="login-box"> <!-- Added div for the floating box -->
         <h1 class="black">Login</h1>
-        <% if (error) { %>
+        <% if (locals.error) { %>
             <div class="alert alert-danger"><%= error %></div>
         <% } %>
         <form action="/login" method="POST">
