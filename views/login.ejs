@@ -1,15 +1,27 @@
+<<<<<<< HEAD
 <%- include('partials/header') %>
 
 <div class="container mt-5 mx-auto black">
     <div class="login-box">
+=======
+<%- include('partials/header') %>\
+
+<div class="container mt-5 mx-auto black">
+    <div class="login-box"> <!-- Added div for the floating box -->
+>>>>>>> origin/master
         <h1 class="black">Login</h1>
         <% if (locals.error) { %>
             <div class="alert alert-danger"><%= error %></div>
         <% } %>
         <form action="/login" method="POST">
             <div class="form-group">
+<<<<<<< HEAD
                 <label for="email">Email</label>
                 <input type="email" class="form-control" id="email" name="email" required>
+=======
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+>>>>>>> origin/master
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -22,5 +34,9 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 
 <%- include('partials/footer') %>
+=======
+<%- include('partials/footer') %>
+>>>>>>> origin/master
